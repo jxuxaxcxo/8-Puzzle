@@ -8,7 +8,9 @@ public class Main {
 	public static void main (String [] args) {
 		initialize();
 		fillGrid();
-		printGrid();
+		printGrid(matrix);
+		
+		ordenado(matrix);
 		
 	}
 	private static void initialize() {
@@ -17,7 +19,7 @@ public class Main {
 		listaDeValores = new ArrayList<Integer>();
 	}
 	
-	public static void printGrid() {
+	public static void printGrid(int [][] matrix) {
 		for(int i = 0; i < 3; i++) {
 			System.out.print("|");
 			for(int j =0; j <3; j++) {
@@ -49,28 +51,57 @@ public class Main {
 			}
 		}
 	}
+	public static void ordenado(int [] []matrix) {
+		ArrayList<int []> posibilidadesActuales = getPosibleMoves(matrix);
+
+		for(int i =0;i<posibilidadesActuales.size();i++) {
+			int [][] currentMatrix = matrix.clone();
+			currentMatrix = movePiece(posibilidadesActuales.get(i), currentMatrix);
+			System.out.println("_________________________");
+			printGrid(currentMatrix);
+		}
+	}
 	
-	public static void movePiece() {
+	public static int[][] movePiece(int[] move, int [][] matrix) {
+		int [][] currentMatrix = new int [3][3];
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				currentMatrix[i][j]=matrix[i][j];
+			}
+		}
+
+		int iN = move[0]/10;
+		int jN = move[0]%10;
+		
+		int i0 = move[1]/10;
+		int j0 = move[1]%10;
+		
+		int aux = currentMatrix[iN][jN];
+		currentMatrix [iN][jN] = currentMatrix [i0][j0];
+		currentMatrix [i0][j0] = aux;
+		
+		return currentMatrix;
+	}
+	
+	public static ArrayList<int []> getPosibleMoves(int [][] matrix) {
+		ArrayList<int []> posibilidades = new ArrayList<int []>();;
 		for(int i=0; i<3;i++) {
 			for(int j =0;j<3;j++) {
-				if(matrix[i][j]==0) {
-					ArrayList<int []> posibilidades = new ArrayList<int []>();
-						if(i!=0 && j!=0){
-							int[] aux = new int[] {1,2};
-							aux = 
-							aux[0] = 1;
-							aux[1] = i*10+j;
-							posibilidades.add(aux);
-							
-						}
-						else if(i==0) {
-							
-						}
-					
-					
+				if(matrix[i][j]==0) {						
+					for(int k=0;k<4;k++) {
+							switch(k) {
+								case 0:{if(j-1>=0) {posibilidades.add(new int[] {(i)*10+(j-1),i*10+j}); break;}} //Caso Izquierda 
+								case 1:{if(i-1>=0) {posibilidades.add(new int[] {(i-1)*10+(j),i*10+j}); break;}} //Caso Arriba
+								case 2:{if(j+1<=2) {posibilidades.add(new int[] {(i)*10+(j+1),i*10+j}); break;}} //Caso Derecha
+								case 3:{if(i+1<=2) {posibilidades.add(new int[] {(i+1)*10+(j),i*10+j}); break;}} //Caso Abajo
+								default:break;
+							}
+					}
+					return posibilidades;
 				}
 			}
 		}
+		return posibilidades;
 	}
 	
 
