@@ -55,6 +55,7 @@ public class Main {
 		ArrayList<int []> posibilidadesActuales = getPosibleMoves(matrix);
 
 		for(int i =0;i<posibilidadesActuales.size();i++) {
+			System.out.println("size" + posibilidadesActuales.size());
 			int [][] currentMatrix = matrix.clone();
 			currentMatrix = movePiece(posibilidadesActuales.get(i), currentMatrix);
 			System.out.println("_________________________");
@@ -90,11 +91,27 @@ public class Main {
 				if(matrix[i][j]==0) {						
 					for(int k=0;k<4;k++) {
 							switch(k) {
-								case 0:{if(j-1>=0) {posibilidades.add(new int[] {(i)*10+(j-1),i*10+j}); break;}} //Caso Izquierda 
-								case 1:{if(i-1>=0) {posibilidades.add(new int[] {(i-1)*10+(j),i*10+j}); break;}} //Caso Arriba
-								case 2:{if(j+1<=2) {posibilidades.add(new int[] {(i)*10+(j+1),i*10+j}); break;}} //Caso Derecha
-								case 3:{if(i+1<=2) {posibilidades.add(new int[] {(i+1)*10+(j),i*10+j}); break;}} //Caso Abajo
-								default:break;
+								case 0:
+									
+									if(j-1>=0 && k==0) {
+										System.out.println("caso 0");
+										posibilidades.add(new int[] {(i)*10+(j-1),i*10+j}); break;} //Caso Izquierda 
+								case 1:
+									
+									if(i-1>=0 && k==1) {
+										System.out.println("caso 1");
+										posibilidades.add(new int[] {(i-1)*10+(j),i*10+j}); break;} //Caso Arriba
+								case 2:
+									
+									if(j+1<=2 && k==2) {
+										System.out.println("caso 2");
+										posibilidades.add(new int[] {(i)*10+(j+1),i*10+j}); break;} //Caso Derecha
+								case 3:
+									
+									if(i+1<=2 && k==3) {
+										System.out.println("caso 3");
+										posibilidades.add(new int[] {(i+1)*10+(j),i*10+j}); break;} //Caso Abajo
+							
 							}
 					}
 					return posibilidades;
