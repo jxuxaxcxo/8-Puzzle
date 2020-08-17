@@ -5,12 +5,13 @@ public class Main {
 	private static  int [][] matrix; 
 	private static ArrayList<Integer> listaDeValores;
 	private static int [][] backupMatrix; 
+	
 	public static void main (String [] args) {
 		initialize();
 		fillGrid();
 		printGrid(matrix);
-		
-		ordenado(matrix);
+		Nodo raiz = new Nodo(matrix,null);
+		ordenado(matrix,raiz);
 		
 	}
 	private static void initialize() {
@@ -51,16 +52,62 @@ public class Main {
 			}
 		}
 	}
-	public static void ordenado(int [] []matrix) {
+	public static void ordenado(int [] []matrix, Nodo padre) {
+		
+		
 		ArrayList<int []> posibilidadesActuales = getPosibleMoves(matrix);
-
+		
 		for(int i =0;i<posibilidadesActuales.size();i++) {
-			System.out.println("size" + posibilidadesActuales.size());
 			int [][] currentMatrix = matrix.clone();
 			currentMatrix = movePiece(posibilidadesActuales.get(i), currentMatrix);
-			System.out.println("_________________________");
-			printGrid(currentMatrix);
+			Nodo nodeActual = new Nodo(currentMatrix,padre);
+			if(finalState(currentMatrix))
+			{
+				System.out.println("ENCONTRADO!!!!!!!!");
+				return;
+			}
+				else
+				{
+					if( checkFather(padre, currentMatrix) == false )
+					{
+						System.out.println("_________________________");
+						printGrid(currentMatrix);
+						ordenado(currentMatrix, nodeActual);
+					}
+				}
+			}
+	}
+
+	public static boolean finalState(int [] []matrix)
+	{
+		int contador = 1;
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				if( ! (matrix[i][j] == (contador % 9)) )
+				{
+					return false;
+				}
+				contador++;
+			}
 		}
+		
+		return true;
+	}
+	
+	public static boolean checkFather(Nodo nodo, int [] [] matrix)
+	{
+		Nodo node = nodo;
+		boolean bool = false;
+		while(node!=null)
+		{
+			if(node.equals(matrix))
+			{
+				System.out.println("entro al if del nodo checkFather");
+				return true;
+			}
+			node = node.padre;
+		}
+		return false;
 	}
 	
 	public static int[][] movePiece(int[] move, int [][] matrix) {
